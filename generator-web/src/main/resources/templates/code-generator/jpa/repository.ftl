@@ -1,4 +1,4 @@
-package ${packageName}.mapper;
+package ${packageName}.repository;
 import ${packageName}.entity.${classInfo.className};
 
 <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0>
@@ -8,9 +8,9 @@ import ${packageName}.entity.${classInfo.className};
         </#if>
     </#list>
 </#if>
-import java.util.List;
+// import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+// import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * @date ${.now?string('yyyy-MM-dd HH:mm:ss')}
  */
 @Repository
-public interface ${classInfo.className}Repository extends JpaRepository<${classInfo.className},Integer> {
+public interface ${classInfo.className}Repository extends JpaRepository<${classInfo.className},String> {
 
 
 

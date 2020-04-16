@@ -10,9 +10,15 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import java.util.Map;
+//import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+//import java.util.List;
+//import java.util.Map;
+import java.util.Optional;
 
 /**
  * @description ${classInfo.classComment}
@@ -20,7 +26,7 @@ import java.util.Map;
  * @date ${.now?string('yyyy-MM-dd HH:mm:ss')}
  */
 @RestController
-@RequestMapping("/${classInfo.className?uncap_first}")
+@RequestMapping(path="/${classInfo.className?uncap_first}")
 public class ${classInfo.className}Controller {
 
     @Autowired
@@ -29,16 +35,16 @@ public class ${classInfo.className}Controller {
     /**
     * 新增或编辑
     */
-    @PostMapping("/save")
-    public Object save(${classInfo.className} ${classInfo.className?uncap_first}){
+    @PostMapping(path="/save")
+    public @ResponseBody Object save(${classInfo.className} ${classInfo.className?uncap_first}){
         return ${classInfo.className?uncap_first}Repository.save(${classInfo.className?uncap_first});
     }
 
     /**
     * 删除
     */
-    @PostMapping("/delete")
-    public Object delete(int id){
+    @DeleteMapping(path="/delete")
+    public @ResponseBody Object delete(String id){
         Optional<${classInfo.className}> ${classInfo.className?uncap_first}=${classInfo.className?uncap_first}Repository.findById(id);
         if(${classInfo.className?uncap_first}.isPresent()){
             ${classInfo.className?uncap_first}Repository.deleteById(id);
@@ -51,8 +57,8 @@ public class ${classInfo.className}Controller {
     /**
     * 查询
     */
-    @PostMapping("/find")
-    public Object find(int id){
+    @GetMapping(path="/find")
+    public @ResponseBody Object find(String id){
         Optional<${classInfo.className}> ${classInfo.className?uncap_first}=${classInfo.className?uncap_first}Repository.findById(id);
         if(${classInfo.className?uncap_first}.isPresent()){
             return ${returnUtil}.success(${classInfo.className?uncap_first}.get());
@@ -64,8 +70,8 @@ public class ${classInfo.className}Controller {
     /**
     * 分页查询
     */
-    @PostMapping("/list")
-    public Object list(${classInfo.className} ${classInfo.className?uncap_first},
+    @PostMapping(path="/list")
+    public @ResponseBody Object list(${classInfo.className} ${classInfo.className?uncap_first},
                         @RequestParam(required = false, defaultValue = "0") int pageNumber,
                         @RequestParam(required = false, defaultValue = "10") int pageSize) {
 

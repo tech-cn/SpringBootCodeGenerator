@@ -1,8 +1,9 @@
 package ${packageName}.entity;
 
-import lombok.Data;
+<#--import lombok.Data;-->
 import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+// import java.util.List;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,11 +19,12 @@ import io.swagger.annotations.ApiModelProperty;
  * @date ${.now?string('yyyy-MM-dd HH:mm:ss')}
  */
 @Entity
-@Data
+<#--@Data-->
 @Table(name="${classInfo.tableName}")<#if swagger?exists && swagger==true>
 @ApiModel("${classInfo.classComment}")</#if>
 public class ${classInfo.className} implements Serializable {
-
+    public ${classInfo.className}() {
+    }
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -37,8 +39,18 @@ public class ${classInfo.className} implements Serializable {
     private ${fieldItem.fieldClass} ${fieldItem.fieldName};
 
 </#list>
-    public ${classInfo.className}() {
-    }
+
+
+    <#list classInfo.fieldList as fieldItem>
+        public ${fieldItem.fieldClass} get${fieldItem.fieldName?cap_first}() {
+            return ${fieldItem.fieldName};
+        }
+
+        public void set${fieldItem.fieldName?cap_first}(${fieldItem.fieldClass} ${fieldItem.fieldName}) {
+            this.${fieldItem.fieldName} = ${fieldItem.fieldName};
+        }
+
+    </#list>
 </#if>
 
 }

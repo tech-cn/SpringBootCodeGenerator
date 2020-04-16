@@ -38,7 +38,7 @@ public class TableParseUtil {
             throw new CodeGenerateException("Table structure can not be empty.");
         }
         //deal with special character
-        tableSql = tableSql.trim().replaceAll("'","`").replaceAll("\"","`").replaceAll("，",",").toLowerCase();
+        tableSql = tableSql.trim().replaceAll("'","`").replaceAll("\"","`").replaceAll("，",",");//.toLowerCase()
         //deal with java string copy \n"
         tableSql = tableSql.trim().replaceAll("\\\\n`","").replaceAll("\\+","").replaceAll("``","`").replaceAll("\\\\","");
         // table Name
@@ -52,8 +52,8 @@ public class TableParseUtil {
         }
 
         //新增处理create table if not exists members情况
-        if (tableName.contains("if not exists")) {
-            tableName=tableName.replaceAll("if not exists","");
+        if (tableName.contains("IF NOT EXISTS")) {
+            tableName=tableName.replaceAll("IF NOT EXISTS","");
         }
 
         if (tableName.contains("`")) {
@@ -159,11 +159,11 @@ public class TableParseUtil {
                 // 2018-11-8 zhengkai 修复tornadoorz反馈的KEY FK_permission_id (permission_id),KEY FK_role_id (role_id)情况
                 // 2019-2-22 zhengkai 要在条件中使用复杂的表达式
                 // 2019-4-29 zhengkai 优化对普通和特殊storage关键字的判断（感谢@AhHeadFloating的反馈 ）
-                boolean specialFlag=(!columnLine.contains("key ")&&!columnLine.contains("constraint")&&!columnLine.contains("using")&&!columnLine.contains("unique")
-                        &&!(columnLine.contains("primary ")&&columnLine.indexOf("storage")+3>columnLine.indexOf("("))
+                boolean specialFlag=(!columnLine.contains("KEY ")&&!columnLine.contains("CONSTRAINT")&&!columnLine.contains("using")&&!columnLine.contains("unique")
+                        &&!(columnLine.contains("PRIMARY ")&&columnLine.indexOf("storage")+3>columnLine.indexOf("("))
                         &&!columnLine.contains("pctincrease")
                         &&!columnLine.contains("buffer_pool")&&!columnLine.contains("tablespace")
-                        &&!(columnLine.contains("primary ")&&i>3));
+                        &&!(columnLine.contains("PRIMARY ")&&i>3));
                 if (specialFlag){
                     //如果是oracle的number(x,x)，可能出现最后分割残留的,x)，这里做排除处理
                     if(columnLine.length()<5) {continue;}
@@ -369,7 +369,7 @@ public class TableParseUtil {
                     String fieldName = colMatcher.group("fieldName");
                     String fieldType = colMatcher.group("fieldType");
                     String fieldComment = colMatcher.group("fieldComment");
-                    if (!"key".equalsIgnoreCase(fieldType)){
+                    if (!"KEY".equalsIgnoreCase(fieldType)){
                         FieldInfo fieldInfo = new FieldInfo();
                         fieldInfo.setFieldName(fieldName.replaceAll("'",""));
                         fieldInfo.setColumnName(fieldName.replaceAll("'",""));
