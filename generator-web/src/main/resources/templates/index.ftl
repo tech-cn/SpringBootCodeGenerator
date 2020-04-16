@@ -227,7 +227,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">作者名称</span>
             </div>
-            <input type="text" class="form-control" id="authorName" name="authorName" value="朱章义">
+            <input type="text" class="form-control" id="authorName" name="authorName" value="vincent zhu">
             <div class="input-group-prepend">
                 <span class="input-group-text">返回封装</span>
             </div>
