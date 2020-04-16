@@ -5,6 +5,8 @@
 [![Build Status](https://travis-ci.org/moshowgame/SpringBootCodeGenerator.svg?branch=master)](https://travis-ci.org/moshowgame/SpringBootCodeGenerator)
 
 
+根据原版改造适合自己使用。
+
 # Description
 - √ 基于SpringBoot2+Freemarker+Bootstrap
 - √ 以释放双手为目的
