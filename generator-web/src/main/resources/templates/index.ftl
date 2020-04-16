@@ -206,7 +206,7 @@
             <a class="navbar-brand" href="http://www.bejson.com">BeJSON在线工具站</a>
             <ul class="nav navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="http://zhengkai.blog.csdn.net">大狼狗CSDN</a>
+                    <a class="nav-link" href="http://zhengkai.blog.csdn.net">原作者CSDN</a>
                 </li>
             </ul>
         </nav>
@@ -227,7 +227,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">作者名称</span>
             </div>
-            <input type="text" class="form-control" id="authorName" name="authorName" value="大狼狗">
+            <input type="text" class="form-control" id="authorName" name="authorName" value="朱章义">
             <div class="input-group-prepend">
                 <span class="input-group-text">返回封装</span>
             </div>
@@ -235,7 +235,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">包名路径</span>
             </div>
-            <input type="text" class="form-control" id="packageName" name="packageName" value="com.softdev.system">
+            <input type="text" class="form-control" id="packageName" name="packageName" value="top.techub.wayne">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -252,10 +252,10 @@
             </div>
             <select type="text" class="form-control" id="tinyintTransType"
                     name="tinyintTransType">
+                <option value="int">int</option>
                 <option value="boolean">boolean</option>
                 <option value="Boolean">Boolean</option>
                 <option value="Integer">Integer</option>
-                <option value="int">int</option>
                 <option value="String">String</option>
             </select>
             <div class="input-group-prepend">
@@ -277,12 +277,25 @@
             </select>
         </div>
         <textarea id="ddlSqlArea" placeholder="请输入表结构信息..." class="form-control btn-lg" style="height: 250px;">
-CREATE TABLE 'userinfo' (
-  'user_id' int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  'username' varchar(255) NOT NULL COMMENT '用户名',
-  'addtime' datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY ('user_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息'
+CREATE TABLE IF NOT EXISTS `Company` (
+  `CompId` varchar(50) NOT NULL COMMENT '单位ID',
+  `CoName` varchar(50) NOT NULL COMMENT '单位名称',
+  `Addr` varchar(50) DEFAULT NULL COMMENT '地址',
+  `CoType` varchar(50) DEFAULT NULL COMMENT '单位类型(数据字典)',
+  `Tel` varchar(50) DEFAULT NULL COMMENT '固定电话',
+  `Phone` varchar(50) DEFAULT NULL COMMENT '移动电话',
+  `Fax` varchar(50) DEFAULT NULL COMMENT '传真号',
+  `Email` varchar(50) DEFAULT NULL COMMENT '邮箱号',
+  `Site` varchar(50) DEFAULT NULL COMMENT '网址',
+  `Area` varchar(50) DEFAULT NULL COMMENT '数据字典维护',
+  `Code` varchar(50) DEFAULT NULL COMMENT '营业执照号码',
+  `BankAccount` varchar(50) DEFAULT NULL COMMENT '银行账号',
+  `LegalPerson` varchar(50) DEFAULT NULL COMMENT '法人',
+  `Creater` varchar(50) DEFAULT NULL,
+  `CreateDate` datetime DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`CompId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='往来单位';
         </textarea><br>
         <p><button class="btn btn-primary btn-lg disabled" id="btnGenCode" role="button" data-toggle="popover" data-content="">开始生成 »</button> <button class="btn alert-secondary" id="btnCopy">一键复制</button></p>
         <div id="history" class="btn-group" role="group" aria-label="Basic example"></div>
