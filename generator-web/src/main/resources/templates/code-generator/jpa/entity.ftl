@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+<#--  import com.fasterxml.jackson.annotation.JsonProperty;  -->
 
 /**
  * @description ${classInfo.classComment}
@@ -36,6 +37,7 @@ public class ${classInfo.className} implements Serializable {
     */<#if swagger?exists && swagger==true>
     @ApiModelProperty("${fieldItem.fieldComment}")</#if>
     @Column(name="${fieldItem.columnName}")
+    <#--  @JsonProperty("${fieldItem.columnName}")  -->
     private ${fieldItem.fieldClass} ${fieldItem.fieldName};
 
 </#list>
