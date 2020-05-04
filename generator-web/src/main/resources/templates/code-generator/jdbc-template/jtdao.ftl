@@ -6,7 +6,7 @@ import java.util.List;
  * @author ${authorName}
  * @date ${.now?string('yyyy-MM-dd HH:mm:ss')}
  */
-public interface I${classInfo.className}DAO {
+public interface I${classInfo.className}Dao {
 
     int add(${classInfo.className} ${classInfo.className?uncap_first});
 
@@ -14,8 +14,11 @@ public interface I${classInfo.className}DAO {
 
     int delete(String id);
 
-    ${classInfo.className} findById(String id);
+    ${classInfo.className} load(String id);
 
-    List<${classInfo.className}> findAllList(Map<String,Object> param);
+    List<${classInfo.className}> loadPage(Map<String,Object> param);
+    
+    int count(Map<String,Object> param);
 
+    int isExist(String userName);
 }

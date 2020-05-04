@@ -16,7 +16,7 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private String cols6="(<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>)";
+    private String cols6="<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>";
     @Override
     public int add(${classInfo.className} ${classInfo.className?uncap_first}) {
         return jdbcTemplate.update("insert into ${classInfo.tableName}(<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>) values (<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >?<#if fieldItem_has_next>,</#if></#list></#if>)",
@@ -26,7 +26,7 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
 
     @Override
     public int update(${classInfo.className} ${classInfo.className?uncap_first}) {
-        return jdbcTemplate.update("UPDATE ${classInfo.tableName} SET <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index gt 0 >${fieldItem.columnName}=?<#if fieldItem_has_next>,</#if></#if></#list></#if>"
+        return jdbcTemplate.update("update ${classInfo.tableName} set <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index gt 0 >${fieldItem.columnName}=?<#if fieldItem_has_next>,</#if></#if></#list></#if>"
         +" where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=?<#break ></#if></#list></#if>",
         <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0>
             <#list classInfo.fieldList as fieldItem ><#if fieldItem_index gt 0 >${classInfo.className?uncap_first}.get${fieldItem.fieldName?cap_first}(),</#if></#list>
@@ -36,11 +36,11 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
 
     @Override
     public int delete(String id) {
-        return jdbcTemplate.update("DELETE from ${classInfo.tableName} where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=?<#break ></#if></#list></#if>",id);
+        return jdbcTemplate.update("delete from ${classInfo.tableName} where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=?<#break ></#if></#list></#if>",id);
     }
 
     @Override
-    public ${classInfo.className} findById(String id) {
+    public ${classInfo.className} load(String id) {
         List<${classInfo.className}> list = jdbcTemplate.query("select * from ${classInfo.tableName} where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=?<#break ></#if></#list></#if>", new Object[]{id}, new BeanPropertyRowMapper<${classInfo.className}>(${classInfo.className}.class));
         if(list!=null && list.size()>0){
             ${classInfo.className} ${classInfo.className?uncap_first} = list.get(0);
@@ -51,13 +51,24 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
     }
 
     @Override
-    public List<${classInfo.className}> findAllList(Map<String,Object> params) {
-        List<${classInfo.className}> list = jdbcTemplate.query("select * from ${classInfo.tableName} limit 3 offset 1", new Object[]{}, new BeanPropertyRowMapper<${classInfo.className}>(${classInfo.className}.class));
+    public List<${classInfo.className}> loadPage(Map<String,Object> params) {
+        List<${classInfo.className}> list = jdbcTemplate.query("select * from ${classInfo.tableName} limit ? offset ?", new Object[]{}, new BeanPropertyRowMapper<${classInfo.className}>(${classInfo.className}.class));
         if(list!=null && list.size()>0){
             return list;
         }else{
             return null;
         }
+    }
+    @Override
+    public int count(Map<String, Object> params) {
+        String sql="select count(1) from ${classInfo.tableName}";
+        int num=jdbcTemplate.queryForObject(sql,Integer.class);
+        return num;
+    }
+    @Override
+    public int isExist(String roleName){
+        String sql="select count(1) from Sys_Role where RoleName=?";
+        return jdbcTemplate.queryForObject(sql,Integer.class,roleName);
     }
 
 }

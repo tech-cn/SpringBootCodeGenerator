@@ -19,15 +19,24 @@ public class ${classInfo.className}Controller {
 
     @Resource
     private ${classInfo.className}Service ${classInfo.className?uncap_first}Service;
+    
+    @Autowired
+    private ${classInfo.className}Dao ${classInfo.className?uncap_first}Dao;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
     * 新增
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    @RequestMapping("/insert")
-    public ReturnT<String> insert(${classInfo.className} ${classInfo.className?uncap_first}){
-        return ${classInfo.className?uncap_first}Service.insert(${classInfo.className?uncap_first});
+    @PostMapping("/add")
+    public int insert(${classInfo.className} ${classInfo.className?uncap_first}){
+        String creater=request.getAttribute("userId").toString();
+        sysRole.setCreater(creater);
+        sysRole.setCreateDate(new Date());
+        return ${classInfo.className?uncap_first}Dao.insert(${classInfo.className?uncap_first});
     }
 
     /**
@@ -35,9 +44,9 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    @RequestMapping("/delete")
-    public ReturnT<String> delete(int id){
-        return ${classInfo.className?uncap_first}Service.delete(id);
+    @DeleteMapping("/{id}")
+    public int delete(String id){
+        return ${classInfo.className?uncap_first}Dao.delete(id);
     }
 
     /**
@@ -45,9 +54,9 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    @RequestMapping("/update")
-    public ReturnT<String> update(${classInfo.className} ${classInfo.className?uncap_first}){
-        return ${classInfo.className?uncap_first}Service.update(${classInfo.className?uncap_first});
+    @PutMapping("/update")
+    public int update(${classInfo.className} ${classInfo.className?uncap_first}){
+        return ${classInfo.className?uncap_first}Dao.update(${classInfo.className?uncap_first});
     }
 
     /**
@@ -55,9 +64,9 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    @RequestMapping("/load")
-    public ReturnT<String> load(int id){
-        return ${classInfo.className?uncap_first}Service.load(id);
+    @GetMapping("/{id}")
+    public ReturnT<String> load(String id){
+        return ${classInfo.className?uncap_first}Dao.load(id);
     }
 
     /**
@@ -65,10 +74,14 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    @RequestMapping("/pageList")
-    public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int offset,
-                                        @RequestParam(required = false, defaultValue = "10") int pagesize) {
-        return ${classInfo.className?uncap_first}Service.pageList(offset, pagesize);
+    @ApiOperation(value = "分页", notes = "分页查询")
+    @PostMapping("/list")
+    public Map<String, Object> pageList(@RequestBody Map<String, Object> param) {
+        int count = ${classInfo.className?uncap_first}Dao.count(param);
+        List<${classInfo.className}> list = ${classInfo.className?uncap_first}Dao.loadPage(param);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("list", list);
+        result.put("count", count);
+        return result;
     }
-
 }
