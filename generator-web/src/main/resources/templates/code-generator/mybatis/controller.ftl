@@ -1,12 +1,20 @@
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.HashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 /**
  * @description ${classInfo.classComment}
@@ -17,11 +25,11 @@ import java.util.Map;
 @RequestMapping(value = "/${classInfo.className}")
 public class ${classInfo.className}Controller {
 
-    @Resource
-    private ${classInfo.className}Service ${classInfo.className?uncap_first}Service;
+    //@Resource
+    //private ${classInfo.className}Service ${classInfo.className?uncap_first}Service;
     
     @Autowired
-    private ${classInfo.className}Dao ${classInfo.className?uncap_first}Dao;
+    private I${classInfo.className}Dao i${classInfo.className}Dao;
 
     @Autowired
     private HttpServletRequest request;
@@ -31,12 +39,13 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
+    @ApiOperation(value = "新增", notes = "")
     @PostMapping("/add")
     public int insert(${classInfo.className} ${classInfo.className?uncap_first}){
         String creater=request.getAttribute("userId").toString();
-        sysRole.setCreater(creater);
-        sysRole.setCreateDate(new Date());
-        return ${classInfo.className?uncap_first}Dao.insert(${classInfo.className?uncap_first});
+        ${classInfo.className?uncap_first}.setCreater(creater);
+        ${classInfo.className?uncap_first}.setCreateDate(new Date());
+        return ${classInfo.className?uncap_first}Dao.add(${classInfo.className?uncap_first});
     }
 
     /**
@@ -44,6 +53,7 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
+    @ApiOperation(value = "刪除", notes = "")
     @DeleteMapping("/{id}")
     public int delete(String id){
         return ${classInfo.className?uncap_first}Dao.delete(id);
@@ -54,6 +64,7 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
+    @ApiOperation(value = "更新", notes = "")
     @PutMapping("/update")
     public int update(${classInfo.className} ${classInfo.className?uncap_first}){
         return ${classInfo.className?uncap_first}Dao.update(${classInfo.className?uncap_first});
@@ -64,8 +75,9 @@ public class ${classInfo.className}Controller {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
+    @ApiOperation(value = "查询 根据主键 id 查询", notes = "")
     @GetMapping("/{id}")
-    public ReturnT<String> load(String id){
+    public ${classInfo.className} load(String id){
         return ${classInfo.className?uncap_first}Dao.load(id);
     }
 
