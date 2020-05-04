@@ -60,12 +60,14 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
             return null;
         }
     }
+
     @Override
     public int count(Map<String, Object> params) {
         String sql="select count(1) from ${classInfo.tableName}";
         int num=jdbcTemplate.queryForObject(sql,Integer.class);
         return num;
     }
+    
     @Override
     public int isExist(String roleName){
         String sql="select count(1) from Sys_Role where RoleName=?";

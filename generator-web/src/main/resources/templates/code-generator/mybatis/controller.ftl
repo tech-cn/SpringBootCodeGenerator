@@ -24,11 +24,11 @@ import java.util.Date;
  */
 @Api(tags = "接口")
 @RestController
-@RequestMapping(value = "/${classInfo.className}")
+@RequestMapping(value = "/api/v1/${classInfo.className}")
 public class ${classInfo.className}Controller {
 
-    //@Resource
-    //private ${classInfo.className}Service ${classInfo.className?uncap_first}Service;
+    <#--  //@Resource
+    //private ${classInfo.className}Service ${classInfo.className?uncap_first}Service;  -->
     
     @Autowired
     private I${classInfo.className}Dao i${classInfo.className}Dao;
@@ -42,8 +42,8 @@ public class ${classInfo.className}Controller {
     * @date ${.now?string('yyyy/MM/dd')}
     **/
     @ApiOperation(value = "新增", notes = "")
-    @PostMapping("/add")
-    public int insert(${classInfo.className} ${classInfo.className?uncap_first}){
+    @PostMapping("/")
+    public int insert(@RequestBody ${classInfo.className} ${classInfo.className?uncap_first}){
         String creater=request.getAttribute("userId").toString();
         ${classInfo.className?uncap_first}.setCreater(creater);
         ${classInfo.className?uncap_first}.setCreateDate(new Date());
@@ -57,7 +57,7 @@ public class ${classInfo.className}Controller {
     **/
     @ApiOperation(value = "刪除", notes = "")
     @DeleteMapping("/{id}")
-    public int delete(String id){
+    public int delete(@ApiParam(value = "id", required = true) @PathVariable("id") String id){
         return i${classInfo.className}Dao.delete(id);
     }
 
@@ -67,8 +67,9 @@ public class ${classInfo.className}Controller {
     * @date ${.now?string('yyyy/MM/dd')}
     **/
     @ApiOperation(value = "更新", notes = "")
-    @PutMapping("/update")
-    public int update(${classInfo.className} ${classInfo.className?uncap_first}){
+    @PutMapping("/{id}")
+    public int update(@RequestBody ${classInfo.className} ${classInfo.className?uncap_first},
+        @ApiParam(value = "id", required = true) @PathVariable("id") String id){
         return i${classInfo.className}Dao.update(${classInfo.className?uncap_first});
     }
 
@@ -79,7 +80,7 @@ public class ${classInfo.className}Controller {
     **/
     @ApiOperation(value = "查询 根据主键 id 查询", notes = "")
     @GetMapping("/{id}")
-    public ${classInfo.className} load(String id){
+    public ${classInfo.className} load(@ApiParam(value = "id", required = true) @PathVariable("id") String id){
         return i${classInfo.className}Dao.load(id);
     }
 
