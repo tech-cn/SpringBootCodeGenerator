@@ -24,7 +24,7 @@ public interface ${classInfo.className}Mapper {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    int delete(int id);
+    int delete(String id);
 
     /**
     * 更新
@@ -38,7 +38,7 @@ public interface ${classInfo.className}Mapper {
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    ${classInfo.className} load(int id);
+    ${classInfo.className} load(String id);
 
     /**
     * 查询 分页查询

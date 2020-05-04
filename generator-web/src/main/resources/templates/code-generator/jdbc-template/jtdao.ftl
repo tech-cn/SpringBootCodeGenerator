@@ -12,9 +12,9 @@ public interface I${classInfo.className}DAO {
 
     int update(${classInfo.className} ${classInfo.className?uncap_first});
 
-    int delete(int id);
+    int delete(String id);
 
-    ${classInfo.className} findById(int id);
+    ${classInfo.className} findById(String id);
 
     List<${classInfo.className}> findAllList(Map<String,Object> param);
 
