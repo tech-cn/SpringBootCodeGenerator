@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashMap;
-import javax.annotation.Resource;
+<#--  import javax.annotation.Resource;  -->
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class ${classInfo.className}Controller {
         String creater=request.getAttribute("userId").toString();
         ${classInfo.className?uncap_first}.setCreater(creater);
         ${classInfo.className?uncap_first}.setCreateDate(new Date());
-        return ${classInfo.className?uncap_first}Dao.add(${classInfo.className?uncap_first});
+        return i${classInfo.className?uncap_first}Dao.add(${classInfo.className?uncap_first});
     }
 
     /**
@@ -56,7 +56,7 @@ public class ${classInfo.className}Controller {
     @ApiOperation(value = "刪除", notes = "")
     @DeleteMapping("/{id}")
     public int delete(String id){
-        return ${classInfo.className?uncap_first}Dao.delete(id);
+        return i${classInfo.className?uncap_first}Dao.delete(id);
     }
 
     /**
@@ -67,7 +67,7 @@ public class ${classInfo.className}Controller {
     @ApiOperation(value = "更新", notes = "")
     @PutMapping("/update")
     public int update(${classInfo.className} ${classInfo.className?uncap_first}){
-        return ${classInfo.className?uncap_first}Dao.update(${classInfo.className?uncap_first});
+        return i${classInfo.className?uncap_first}Dao.update(${classInfo.className?uncap_first});
     }
 
     /**
@@ -78,7 +78,7 @@ public class ${classInfo.className}Controller {
     @ApiOperation(value = "查询 根据主键 id 查询", notes = "")
     @GetMapping("/{id}")
     public ${classInfo.className} load(String id){
-        return ${classInfo.className?uncap_first}Dao.load(id);
+        return i${classInfo.className?uncap_first}Dao.load(id);
     }
 
     /**
@@ -89,8 +89,8 @@ public class ${classInfo.className}Controller {
     @ApiOperation(value = "分页", notes = "分页查询")
     @PostMapping("/list")
     public Map<String, Object> pageList(@RequestBody Map<String, Object> param) {
-        int count = ${classInfo.className?uncap_first}Dao.count(param);
-        List<${classInfo.className}> list = ${classInfo.className?uncap_first}Dao.loadPage(param);
+        int count = i${classInfo.className?uncap_first}Dao.count(param);
+        List<${classInfo.className}> list = i${classInfo.className?uncap_first}Dao.loadPage(param);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("list", list);
         result.put("count", count);
