@@ -2,7 +2,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import java.util.List;
 import java.util.Map;
 
@@ -17,17 +19,17 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
     @Autowired
     private NamedParameterJdbcTemplate nameJdbcTemplate;
 
-    private String cols6="<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>";
+    <#--  private String cols6="<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>";  -->
     @Override
     public int add(${classInfo.className} ${classInfo.className?uncap_first}) {
-        SqlParameterSource paramSource=new BeanPropertySqlParameterSource(sysUser);
+        SqlParameterSource paramSource=new BeanPropertySqlParameterSource(${classInfo.className?uncap_first});
         return nameJdbcTemplate.update("insert into ${classInfo.tableName}(<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>) values (<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >:${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>)",
         paramSource);       
     }
 
     @Override
     public int update(${classInfo.className} ${classInfo.className?uncap_first}) {
-        SqlParameterSource paramSource=new BeanPropertySqlParameterSource(sysUser);
+        SqlParameterSource paramSource=new BeanPropertySqlParameterSource(${classInfo.className?uncap_first});
         return nameJdbcTemplate.update("update ${classInfo.tableName} set <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index gt 0 >${fieldItem.columnName}=:${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#if></#list></#if>"
         +" where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=:${fieldItem.columnName}<#break ></#if></#list></#if>",
         paramSource);
@@ -35,14 +37,18 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
 
     @Override
     public int delete(String id) {
-        return nameJdbcTemplate.update("delete from ${classInfo.tableName} where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=:${fieldItem.columnName}<#break ></#if></#list></#if>",id);
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}<#break ></#if></#list></#if>", id);
+        return nameJdbcTemplate.update("delete from ${classInfo.tableName} where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=:${fieldItem.columnName}<#break ></#if></#list></#if>",
+        paramSource);
     }
 
     @Override
     public ${classInfo.className} load(String id) {
-        ${classInfo.className} ${classInfo.className?uncap_first} = nameJdbcTemplate.queryForObject("select <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if> from ${classInfo.tableName} where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=:${fieldItem.columnName}<#break ></#if></#list></#if>", new BeanPropertyRowMapper<${classInfo.className}>(${classInfo.className}.class), id);
-        if(list!=null && list.size()>0){
-            ${classInfo.className} ${classInfo.className?uncap_first} = list.get(0);
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}<#break ></#if></#list></#if>", id);
+        ${classInfo.className} ${classInfo.className?uncap_first} = nameJdbcTemplate.queryForObject("select <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if> from ${classInfo.tableName} where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=:${fieldItem.columnName}<#break ></#if></#list></#if>",paramSource,new BeanPropertyRowMapper<${classInfo.className}>(${classInfo.className}.class));
+        if(${classInfo.className?uncap_first}!=null){
             return ${classInfo.className?uncap_first};
         }else{
              return null;
