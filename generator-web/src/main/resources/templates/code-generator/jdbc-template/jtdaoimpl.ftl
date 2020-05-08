@@ -1,6 +1,6 @@
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+<#--  import org.springframework.jdbc.core.JdbcTemplate;  -->
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -101,7 +101,7 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
     @Override
     public int isExist(String selectName){
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("selectName", id);
+        paramSource.addValue("selectName", selectName);
         String sql="select count(1) from ${classInfo.tableName} where SelectName=:SelectName";
         return nameJdbcTemplate.queryForObject(sql,paramSource,Integer.class);
     }
