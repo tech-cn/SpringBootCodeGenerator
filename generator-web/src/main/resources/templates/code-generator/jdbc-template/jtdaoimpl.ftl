@@ -20,16 +20,17 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
     private String cols6="<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>";
     @Override
     public int add(${classInfo.className} ${classInfo.className?uncap_first}) {
+        SqlParameterSource paramSource=new BeanPropertySqlParameterSource(sysUser);
         return nameJdbcTemplate.update("insert into ${classInfo.tableName}(<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>) values (<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem >:${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#list></#if>)",
-        ${classInfo.className?uncap_first});
-        
+        paramSource);       
     }
 
     @Override
     public int update(${classInfo.className} ${classInfo.className?uncap_first}) {
+        SqlParameterSource paramSource=new BeanPropertySqlParameterSource(sysUser);
         return nameJdbcTemplate.update("update ${classInfo.tableName} set <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index gt 0 >${fieldItem.columnName}=:${fieldItem.columnName}<#if fieldItem_has_next>,</#if></#if></#list></#if>"
         +" where <#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0><#list classInfo.fieldList as fieldItem ><#if fieldItem_index = 0>${fieldItem.columnName}=:${fieldItem.columnName}<#break ></#if></#list></#if>",
-        ${classInfo.className?uncap_first});
+        paramSource);
     }
 
     @Override
