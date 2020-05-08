@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
         stb.append(" limit :pageSize offset :offsetNo");
         int offsetNo = (currPage - 1) * pageSize;
         params.put("offsetNo",offsetNo);
-        List<${classInfo.className}> list = nameJdbc.query(stb.toString(), params, new BeanPropertyRowMapper<${classInfo.className}>(${classInfo.className}.class));   
+        List<${classInfo.className}> list = nameJdbcTemplate.query(stb.toString(), params, new BeanPropertyRowMapper<${classInfo.className}>(${classInfo.className}.class));   
         if(list!=null && list.size()>0){
             return list;
         }else{
@@ -93,14 +94,16 @@ public class ${classInfo.className}DaoImpl implements I${classInfo.className}Dao
             st.append("%");
             params.put("filter", st.toString());
         }
-        int num=nameJdbcTemplate.queryForObject(sql,params,Integer.class);
+        int num=nameJdbcTemplate.queryForObject(stb.toString(),params,Integer.class);
         return num;
     }
     
     @Override
     public int isExist(String selectName){
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("selectName", id);
         String sql="select count(1) from ${classInfo.tableName} where SelectName=:SelectName";
-        return nameJdbcTemplate.queryForObject(sql,Integer.class,selectName);
+        return nameJdbcTemplate.queryForObject(sql,paramSource,Integer.class);
     }
 
 }
